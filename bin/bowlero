@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/bowlero'
+require_relative '../lib/bowlero/dice'
 
 # Array of fun bowling pun names
 PUN_NAMES = [
@@ -44,7 +45,70 @@ def start_game
   default_name = PUN_NAMES.sample
   name = prompt("Enter your player name [#{default_name}]:")
   name = default_name if name.strip.empty?
-  puts "\nWelcome, #{name}! (Game logic coming soon...)"
+  puts "\nWelcome, #{name}! Let's bowl a full game."
+
+  frames = []
+  10.times do |frame_num|
+    puts "\n--- Frame #{frame_num + 1} ---"
+    strike_result = Bowlero::Dice.roll_strike_die
+    if strike_result == :strike
+      puts "🎳 STRIKE! You knocked down all 10 pins on the first roll!"
+      frames << {frame: frame_num + 1, result: :strike, pins: 10}
+      next
+    end
+    split_result = Bowlero::Dice.roll_split_die
+    if split_result == :split
+      if strike_result == 1 || strike_result == 2
+        total_pins = strike_result + 6
+        split_value = 6
+      else
+        total_pins = strike_result + strike_result
+        split_value = strike_result
+      end
+      puts "You knocked down #{strike_result} pins and left a SPLIT! (Split worth #{split_value}, Total: #{total_pins} pins)"
+      if total_pins >= 10
+        puts "That's a STRIKE by pin count!"
+        frames << {frame: frame_num + 1, result: :strike, pins: 10}
+      else
+        split_res = Bowlero::Dice.roll_split_resolution_die
+        if split_res == :spare
+          puts "You converted the split for a SPARE!"
+          frames << {frame: frame_num + 1, result: :spare, pins: total_pins}
+        else
+          puts "Open frame. Some pins left standing."
+          frames << {frame: frame_num + 1, result: :open, pins: total_pins}
+        end
+      end
+    else
+      total_pins = strike_result + split_result
+      puts "You knocked down #{strike_result} and #{split_result} pins (Total: #{total_pins})"
+      if total_pins >= 10
+        puts "That's a STRIKE by pin count!"
+        frames << {frame: frame_num + 1, result: :strike, pins: 10}
+      else
+        spare_res = Bowlero::Dice.roll_spare_resolution_die
+        if spare_res == :spare
+          puts "You picked up the spare!"
+          frames << {frame: frame_num + 1, result: :spare, pins: total_pins}
+        else
+          puts "Open frame. Some pins left standing."
+          frames << {frame: frame_num + 1, result: :open, pins: total_pins}
+        end
+      end
+    end
+  end
+
+  puts "\n--- Game Summary for #{name} ---"
+  frames.each do |f|
+    case f[:result]
+    when :strike
+      puts "Frame #{f[:frame]}: STRIKE! (10 pins)"
+    when :spare
+      puts "Frame #{f[:frame]}: SPARE! (#{f[:pins]} pins)"
+    else
+      puts "Frame #{f[:frame]}: Open frame (#{f[:pins]} pins)"
+    end
+  end
   puts "\n[Press Enter to return to menu]"
   gets
 end

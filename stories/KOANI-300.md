@@ -113,7 +113,7 @@ The bowling game uses a set of custom dice to simulate the outcome of each frame
 - [x] Set up gem structure and CLI entry point
 - [x] Implement menu system (Start Game, Exit)
 - [x] Implement player name prompt with random pun defaults
-- [ ] Implement dice logic and frame/roll mechanics (see Dice Logic Specification)
+- [x] Implement dice logic and frame/roll mechanics (see Dice Logic Specification)
 - [ ] Implement bowling scoring logic (standard rules)
 - [ ] Render ASCII bowling scorecard with emoji support
 - [ ] Add confirmation prompt for mid-game exit
@@ -150,6 +150,7 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 - User journey and dice mechanics defined
 - Plan and phases outlined
 - 2025-05-13: CLI entry point and interactive menu implemented. Player name prompt with pun names added.
+- 2025-05-13: Full 10-frame game flow with dice logic implemented in CLI.
 
 ## Next Steps for Next Agent
 

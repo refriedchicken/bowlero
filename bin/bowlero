@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/bowlero'
+
+# Array of fun bowling pun names
+PUN_NAMES = [
+  'Pin Diesel', 'Bowl Job', "Livin' on a Spare", 'Alley McBowl',
+  'Split Happens', 'Gutterball Guru', 'The Pincredible Hulk',
+  'Strike Tyson', 'Bowliver Twist', 'Rolling Thunder'
+]
+
+def clear_screen
+  system('clear') || system('cls')
+end
+
+def prompt(message)
+  print "#{message} "
+  gets.chomp
+end
+
+def main_menu
+  loop do
+    clear_screen
+    puts '🎳 Welcome to Bowlero! 🎳'
+    puts '1. Start Game'
+    puts '2. Exit'
+    print 'Choose an option: '
+    choice = gets.chomp.strip
+    case choice
+    when '1'
+      start_game
+    when '2'
+      puts 'Thanks for playing Bowlero!'
+      exit(0)
+    else
+      puts 'Invalid option. Press Enter to try again.'
+      gets
+    end
+  end
+end
+
+def start_game
+  clear_screen
+  default_name = PUN_NAMES.sample
+  name = prompt("Enter your player name [#{default_name}]:")
+  name = default_name if name.strip.empty?
+  puts "\nWelcome, #{name}! (Game logic coming soon...)"
+  puts "\n[Press Enter to return to menu]"
+  gets
+end
+
+main_menu 

@@ -21,7 +21,7 @@ A single-player command-line bowling game Ruby gem that uses a custom dice mecha
 
 - **Data Model:**  
   - Game session: player name, frames, rolls, scores.
-  - Dice logic: see “Dice Logic Specification” below.
+  - Dice logic: see "Dice Logic Specification" below.
   - Logging: error logs (plain text or JSON, best practice).
 
 - **Navigation:**  
@@ -49,46 +49,46 @@ The bowling game uses a set of custom dice to simulate the outcome of each frame
 
 1. **Strike Die**
    - Sides 1–5: Number of pins knocked down (1–5)
-   - Side 6: “Strike” (all 10 pins knocked down, frame ends)
+   - Side 6: "Strike" (all 10 pins knocked down, frame ends)
 
 2. **Split Die**
    - Sides 1–5: Number of pins knocked down (1–5)
-   - Side 6: “Split” (special split scenario, see below)
+   - Side 6: "Split" (special split scenario, see below)
 
-3. **Split Resolution Die** (used only if “Split” is rolled on the Split Die)
-   - Sides 1–4: “Open” (split not converted, no spare)
-   - Sides 5–6: “Spare” (split converted, all pins knocked down)
+3. **Split Resolution Die** (used only if "Split" is rolled on the Split Die)
+   - Sides 1–4: "Open" (split not converted, no spare)
+   - Sides 5–6: "Spare" (split converted, all pins knocked down)
 
 4. **Spare Resolution Die** (used if no Strike or Split is rolled)
-   - Sides 1–4: “Spare” (all remaining pins knocked down)
-   - Sides 5–6: “Open” (some pins left standing, no spare)
+   - Sides 1–4: "Spare" (all remaining pins knocked down)
+   - Sides 5–6: "Open" (some pins left standing, no spare)
 
 ### Roll Sequence (Per Frame)
 
 1. **First Roll:**
    - Roll both the Strike Die and the Split Die together.
-   - If the Strike Die lands on “Strike,” it’s a strike (10 pins, frame ends).
+   - If the Strike Die lands on "Strike," it's a strike (10 pins, frame ends).
    - Otherwise, sum the pins from both dice:
-     - If the Split Die lands on 1–5, add that number to the Strike Die’s result (total 2–10 pins).
-     - If the Split Die lands on “Split,” add 6 pins to the Strike Die’s result (total 7–11 pins).
-   - If the total pins knocked down is 10 or more, it’s a strike (frame ends).
+     - If the Split Die lands on 1–5, add that number to the Strike Die's result (total 2–10 pins).
+     - If the Split Die lands on "Split," add 6 pins to the Strike Die's result (total 7–11 pins).
+   - If the total pins knocked down is 10 or more, it's a strike (frame ends).
    - If not a strike, proceed to the second roll.
 
 2. **Second Roll:**
-   - If the first roll resulted in a “Split,” roll the Split Resolution Die:
-     - “Spare”: All remaining pins knocked down (spare).
-     - “Open”: Some pins left standing (open frame).
-   - If the first roll did NOT result in a “Split,” roll the Spare Resolution Die:
-     - “Spare”: All remaining pins knocked down (spare).
-     - “Open”: Some pins left standing (open frame).
+   - If the first roll resulted in a "Split," roll the Split Resolution Die:
+     - "Spare": All remaining pins knocked down (spare).
+     - "Open": Some pins left standing (open frame).
+   - If the first roll did NOT result in a "Split," roll the Spare Resolution Die:
+     - "Spare": All remaining pins knocked down (spare).
+     - "Open": Some pins left standing (open frame).
 
 ### Special Notes
 
-- If the Strike Die is “Strike,” ignore the Split Die result.
-- If the total pins from both dice (excluding “Strike” on Strike Die) is 10 or more, treat as a strike.
-- If the Split Die is “Split,” always add 6 pins for that die, regardless of the Strike Die’s value.
-- The second roll is always either the Split Resolution Die (if “Split” was rolled) or the Spare Resolution Die (otherwise).
-- All outcomes are described to the player in plain language (e.g., “You knocked down 5 pins and left a split.”). Dice roll values are not shown unless a future debug mode is enabled.
+- If the Strike Die is "Strike," ignore the Split Die result.
+- If the total pins from both dice (excluding "Strike" on Strike Die) is 10 or more, treat as a strike.
+- If the Split Die is "Split," always add 6 pins for that die, regardless of the Strike Die's value.
+- The second roll is always either the Split Resolution Die (if "Split" was rolled) or the Spare Resolution Die (otherwise).
+- All outcomes are described to the player in plain language (e.g., "You knocked down 5 pins and left a split."). Dice roll values are not shown unless a future debug mode is enabled.
 
 ## User Journey
 
@@ -110,9 +110,9 @@ The bowling game uses a set of custom dice to simulate the outcome of each frame
 ## Implementation Phases
 
 ### Phase 1: CLI Gem MVP [ ]
-- [ ] Set up gem structure and CLI entry point
-- [ ] Implement menu system (Start Game, Exit)
-- [ ] Implement player name prompt with random pun defaults
+- [x] Set up gem structure and CLI entry point
+- [x] Implement menu system (Start Game, Exit)
+- [x] Implement player name prompt with random pun defaults
 - [ ] Implement dice logic and frame/roll mechanics (see Dice Logic Specification)
 - [ ] Implement bowling scoring logic (standard rules)
 - [ ] Render ASCII bowling scorecard with emoji support
@@ -149,6 +149,7 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 - Requirements clarified and confirmed with stakeholder
 - User journey and dice mechanics defined
 - Plan and phases outlined
+- 2025-05-13: CLI entry point and interactive menu implemented. Player name prompt with pun names added.
 
 ## Next Steps for Next Agent
 
@@ -164,7 +165,7 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 
 - Dice logic: See Dice Logic Specification above for full details.
 - Scorecard: ASCII table, styled after real bowling cards, with emoji overlays.
-- Logging: Use Ruby’s Logger or similar, log to file in current directory, plain text for simplicity.
+- Logging: Use Ruby's Logger or similar, log to file in current directory, plain text for simplicity.
 - CLI: Use Thor or OptionParser for CLI entry, but keep initial version minimal and interactive.
 - Player names: Array of 10 bowling pun names, randomly assigned if user skips input.
 

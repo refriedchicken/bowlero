@@ -1,4 +1,4 @@
-# Bowling Dice Game Ruby Gem (KOANI-300)
+# Bowlero Ruby Gem (KOANI-300)
 
 > **Progress:**
 > _Awaiting initial implementation. Requirements and plan approved. Next step: begin development of v1 CLI gem._
@@ -25,7 +25,7 @@ A single-player command-line bowling game Ruby gem that uses a custom dice mecha
   - Logging: error logs (plain text or JSON, best practice).
 
 - **Navigation:**  
-  - User starts by running the gem (e.g., `300bowling`).
+  - User starts by running the gem (e.g., `bowlero`).
   - Menu: Start Game, Exit.
   - Prompts for name, then game begins.
   - After game: show final score, prompt to play again or exit.
@@ -93,7 +93,7 @@ The bowling game uses a set of custom dice to simulate the outcome of each frame
 ## User Journey
 
 - **How does a user get there?**  
-  Installs the gem, runs `300bowling` in the terminal. Sees a menu with options.
+  Installs the gem, runs `bowlero` in the terminal. Sees a menu with options.
 
 - **What do they do when they are there?**  
   Selects "Start Game," enters (or accepts) a player name, chooses single game or series, plays through 10 frames, rolling dice per frame, sees results and score updates after each roll.
@@ -176,7 +176,7 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 
 ## Success Criteria
 
-1. User can install gem, run `300bowling`, and play a full single-player game with correct scoring and dice logic.
+1. User can install gem, run `bowlero`, and play a full single-player game with correct scoring and dice logic.
 2. Output includes ASCII scorecard and emojis for key events.
 3. Errors are handled gracefully and logged.
 4. User can exit or replay at end of game, with confirmation on mid-game exit.

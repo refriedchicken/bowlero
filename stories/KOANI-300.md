@@ -116,8 +116,8 @@ The bowling game uses a set of custom dice to simulate the outcome of each frame
 - [x] Implement dice logic and frame/roll mechanics (see Dice Logic Specification)
 - [x] Add Frame class to represent each frame's data
 - [x] Refactor CLI game loop to use Frame objects for each frame
-- [ ] Implement bowling scoring logic (standard rules)
-- [ ] Render ASCII bowling scorecard with emoji support
+- [x] Implement bowling scoring logic (standard rules)
+- [x] Render ASCII bowling scorecard with emoji support (final: ASCII only for alignment; emojis in play-by-play)
 - [ ] Add confirmation prompt for mid-game exit
 - [ ] Implement error handling and logging (best practice)
 - [ ] Unit tests for core logic (dice, scoring, CLI)
@@ -158,6 +158,8 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 - 2025-05-13: Full 10-frame game flow with dice logic implemented in CLI.
 - 2025-05-13: Frame class (Bowlero::Frame) added for structured frame data.
 - 2025-05-13: Refactored CLI to use Bowlero::Frame objects for each frame. Added lib/bowlero.rb to require all submodules. CLI now tracks all frame data in Frame objects.
+- 2025-06-07: Implemented standard bowling scoring logic (including strike and spare bonuses) and running/final score display.
+- 2025-06-07: Implemented ASCII bowling scorecard for perfect alignment; emojis now reserved for play-by-play and summary.
 
 ## Next Steps for Next Agent
 
@@ -165,8 +167,12 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 > The Bowlero::Frame class is now available in lib/bowlero/frame.rb and should be used to represent each frame in the game. Refactor the CLI game loop to use Frame objects for each frame instead of hashes. Once refactored, implement standard bowling scoring logic using the data in each Frame object, including strike and spare bonuses. After scoring is implemented, update the game summary to show the running and final scores for the player. See the Frame class for available fields and use them to track all necessary frame and scoring data.
 
 - [x] Refactor the CLI game loop to use Frame objects for each frame
-- [ ] Implement standard bowling scoring logic using Frame data (including strike and spare bonuses)
-- [ ] Update the game summary to show running and final scores for the player
+- [x] Implement standard bowling scoring logic using Frame data (including strike and spare bonuses)
+- [x] Update the game summary to show running and final scores for the player
+- [x] Render ASCII bowling scorecard (ASCII only for alignment; emojis in play-by-play)
+- [ ] Add confirmation prompt for mid-game exit
+- [ ] Implement error handling and logging
+- [ ] Add series mode (option for 3 games)
 
 ## Technical Details & Decisions
 

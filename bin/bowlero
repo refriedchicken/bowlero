@@ -52,29 +52,32 @@ def start_game
     puts "\n--- Frame #{frame_num + 1} ---"
     strike_result = Bowlero::Dice.roll_strike_die
     frame = Bowlero::Frame.new(frame_number: frame_num + 1)
-    frame.first_roll = strike_result
     if strike_result == :strike
       puts "🎳 STRIKE! You knocked down all 10 pins on the first roll!"
       frame.result = :strike
+      frame.first_roll = 10
+      frame.second_roll = 0
       frame.pins = 10
       frames << frame
       next
     end
+    frame.first_roll = strike_result
     split_result = Bowlero::Dice.roll_split_die
     frame.split = (split_result == :split)
-    frame.second_roll = split_result
     if split_result == :split
       if strike_result == 1 || strike_result == 2
-        total_pins = strike_result + 6
         split_value = 6
+        total_pins = strike_result + split_value
       else
-        total_pins = strike_result + strike_result
         split_value = strike_result
+        total_pins = strike_result + strike_result
       end
       puts "You knocked down #{strike_result} pins and left a SPLIT! (Split worth #{split_value}, Total: #{total_pins} pins)"
       if total_pins >= 10
         puts "That's a STRIKE by pin count!"
         frame.result = :strike
+        frame.first_roll = total_pins # treat as strike for scoring
+        frame.second_roll = 0
         frame.pins = 10
       else
         split_res = Bowlero::Dice.roll_split_resolution_die
@@ -82,45 +85,120 @@ def start_game
         if split_res == :spare
           puts "You converted the split for a SPARE!"
           frame.result = :spare
+          frame.second_roll = 10 - strike_result
+          frame.pins = 10
         else
           puts "Open frame. Some pins left standing."
           frame.result = :open
+          frame.second_roll = total_pins - strike_result
+          frame.pins = total_pins
         end
-        frame.pins = total_pins
       end
     else
+      frame.second_roll = split_result
       total_pins = strike_result + split_result
       puts "You knocked down #{strike_result} and #{split_result} pins (Total: #{total_pins})"
       if total_pins >= 10
         puts "That's a STRIKE by pin count!"
         frame.result = :strike
+        frame.first_roll = 10
+        frame.second_roll = 0
         frame.pins = 10
       else
         spare_res = Bowlero::Dice.roll_spare_resolution_die
         if spare_res == :spare
           puts "You picked up the spare!"
           frame.result = :spare
+          frame.second_roll = 10 - strike_result
+          frame.pins = 10
         else
           puts "Open frame. Some pins left standing."
           frame.result = :open
+          frame.pins = total_pins
         end
-        frame.pins = total_pins
       end
     end
     frames << frame
   end
 
+  # --- Scoring pass ---
+  def next_rolls(frames, idx, count)
+    rolls = []
+    i = idx + 1
+    while rolls.size < count && i < frames.size
+      f = frames[i]
+      rolls << f.first_roll if rolls.size < count
+      rolls << f.second_roll if rolls.size < count
+      i += 1
+    end
+    rolls[0, count]
+  end
+
+  total_score = 0
+  frames.each_with_index do |f, i|
+    if f.result == :strike
+      bonus_rolls = next_rolls(frames, i, 2)
+      f.score = 10 + bonus_rolls.sum
+    elsif f.result == :spare
+      bonus_rolls = next_rolls(frames, i, 1)
+      f.score = 10 + bonus_rolls.sum
+    else
+      f.score = f.first_roll + f.second_roll
+    end
+    total_score += f.score
+    f.score = total_score
+  end
+
+  def print_scorecard(frames)
+    # Frame header
+    puts '+---' * 10 + '+'
+    print '|'
+    (1..10).each { |n| print "%2s |" % n }
+    puts
+    puts '+-+-' * 10 + '+'
+
+    # Rolls row
+    print '|'
+    frames.each_with_index do |f, i|
+      r1 = r2 = ' '
+      if f.result == :strike
+        r1 = 'X'
+        r2 = ' '
+      elsif f.result == :spare
+        r1 = f.first_roll == 0 ? '-' : f.first_roll.to_s
+        r2 = '/'
+      elsif f.split
+        r1 = f.first_roll == 0 ? '-' : f.first_roll.to_s
+        r2 = 'S'
+      else
+        r1 = f.first_roll == 0 ? '-' : f.first_roll.to_s
+        r2 = f.second_roll == 0 ? '-' : f.second_roll.to_s
+      end
+      print "%s|%s|" % [r1, r2]
+    end
+    puts
+    puts '+---' * 10 + '+'
+
+    # Scores row
+    print '|'
+    frames.each { |f| print "%3s|" % f.score }
+    puts
+    puts '+---' * 10 + '+'
+  end
+
   puts "\n--- Game Summary for #{name} ---"
+  print_scorecard(frames)
   frames.each do |f|
     case f.result
     when :strike
-      puts "Frame #{f.frame_number}: STRIKE! (10 pins)"
+      puts "Frame #{f.frame_number}: STRIKE! (10 pins) | Running Score: #{f.score}"
     when :spare
-      puts "Frame #{f.frame_number}: SPARE! (#{f.pins} pins)"
+      puts "Frame #{f.frame_number}: SPARE! (#{f.pins} pins) | Running Score: #{f.score}"
     else
-      puts "Frame #{f.frame_number}: Open frame (#{f.pins} pins)"
+      puts "Frame #{f.frame_number}: Open frame (#{f.pins} pins) | Running Score: #{f.score}"
     end
   end
+  puts "\nFinal Score: #{frames.last.score}"
   puts "\n[Press Enter to return to menu]"
   gets
 end

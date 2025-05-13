@@ -1,13 +1,12 @@
 module Bowlero
   class CLI
-    def self.start
-      # Array of fun bowling pun names
-      PUN_NAMES = [
-        'Pin Diesel', 'Bowl Job', "Livin' on a Spare", 'Alley McBowl',
-        'Split Happens', 'Gutterball Guru', 'The Pincredible Hulk',
-        'Strike Tyson', 'Bowliver Twist', 'Rolling Thunder'
-      ]
+    PUN_NAMES = [
+      'Pin Diesel', 'Bowl Job', "Livin' on a Spare", 'Alley McBowl',
+      'Split Happens', 'Gutterball Guru', 'The Pincredible Hulk',
+      'Strike Tyson', 'Bowliver Twist', 'Rolling Thunder'
+    ]
 
+    def self.start
       def clear_screen
         system('clear') || system('cls')
       end

@@ -164,12 +164,14 @@ Requirements and plan approved. Ready for initial gem scaffolding and CLI implem
 ## Next Steps for Next Agent
 
 > ### Handoff Note for Next Agent
-> The Bowlero::Frame class is now available in lib/bowlero/frame.rb and should be used to represent each frame in the game. Refactor the CLI game loop to use Frame objects for each frame instead of hashes. Once refactored, implement standard bowling scoring logic using the data in each Frame object, including strike and spare bonuses. After scoring is implemented, update the game summary to show the running and final scores for the player. See the Frame class for available fields and use them to track all necessary frame and scoring data.
+> The game now fully implements correct bowling rules for all frames, including the 10th frame (extra rolls for strikes/spares, correct pin counting, and dice logic for all rolls). The dice logic is now accurate: both the Strike Die and Split Die are rolled together for the first roll in every frame, and the result is handled as per the Dice Logic Specification. The scorecard and running/final scores are displayed correctly. Remaining tasks include: adding a confirmation prompt for mid-game exit, implementing error handling and logging, adding series mode (option for 3 games), and further polish (emojis, UX, tests, documentation). The code is ready for these next steps.
 
 - [x] Refactor the CLI game loop to use Frame objects for each frame
 - [x] Implement standard bowling scoring logic using Frame data (including strike and spare bonuses)
 - [x] Update the game summary to show running and final scores for the player
 - [x] Render ASCII bowling scorecard (ASCII only for alignment; emojis in play-by-play)
+- [x] Implement correct 10th frame logic (extra rolls for strikes/spares, correct pin counting, dice logic applies to all rolls)
+- [x] Refactor dice rolling logic to roll both Strike Die and Split Die together for the first roll in all frames, as per Dice Logic Specification
 - [ ] Add confirmation prompt for mid-game exit
 - [ ] Implement error handling and logging
 - [ ] Add series mode (option for 3 games)

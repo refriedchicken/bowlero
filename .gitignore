@@ -9,3 +9,10 @@
 
 # rspec failure tracking
 .rspec_status
+
+
+# Private individual user cursor rules
+.cursor/rules/
+.cursor/backups/
+.cursor/templates/
+/docs/
